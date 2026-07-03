@@ -52,8 +52,8 @@ def preprocess_image(file_bytes: bytes) -> np.ndarray:
     img_bgr  = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
     img_rgb  = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
     img_res  = cv2.resize(img_rgb, (IMG_SIZE, IMG_SIZE))
-    img_norm = img_res.astype("float32") / 255.0
-    return img_rgb, img_res, np.expand_dims(img_norm, axis=0)
+    img_input = img_res.astype("float32")
+    return img_rgb, img_res, np.expand_dims(img_input, axis=0)
 
 
 def get_gradcam_heatmap(img_array: np.ndarray, pred_index: int) -> np.ndarray:
