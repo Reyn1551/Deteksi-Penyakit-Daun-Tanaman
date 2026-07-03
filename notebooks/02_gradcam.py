@@ -148,7 +148,7 @@ def predict_and_gradcam(
     img_bgr  = cv2.imread(image_path)
     img_rgb  = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
     img_res  = cv2.resize(img_rgb, (img_size, img_size))
-    img_norm = img_res.astype("float32") / 255.0
+    img_norm = img_res.astype("float32")
     img_arr  = np.expand_dims(img_norm, axis=0)
 
     # ── Prediksi ──
@@ -238,7 +238,7 @@ def batch_gradcam(
         img_bgr  = cv2.imread(img_path)
         img_rgb  = cv2.cvtColor(img_bgr, cv2.COLOR_BGR2RGB)
         img_res  = cv2.resize(img_rgb, (img_size, img_size))
-        img_norm = img_res.astype("float32") / 255.0
+        img_norm = img_res.astype("float32")
         img_arr  = np.expand_dims(img_norm, axis=0)
 
         preds    = model.predict(img_arr, verbose=0)[0]

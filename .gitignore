@@ -23,15 +23,18 @@ ENV/
 Thumbs.db
 
 # Data and outputs
-outputs/
+# (outputs/ and models/ are allowed to be tracked as requested)
 *.h5
 *.pt
 *.pth
 *.ckpt
 
 # Models and dataset files
-models/
 data/
+plantvillage-dataset.zip
+*.zip
+*.rar
+*.tar.gz
 
 # Logs and checkpoints
 logs/
