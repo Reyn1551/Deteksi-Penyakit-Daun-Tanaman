@@ -69,6 +69,8 @@ def get_gradcam_heatmap(img_array: np.ndarray, pred_index: int) -> np.ndarray:
     conv_output = conv_output[0]
     heatmap     = conv_output @ pooled_grads[..., tf.newaxis]
     heatmap     = tf.squeeze(heatmap)
+    # Cast ke float32 agar didukung OpenCV resize
+    heatmap     = tf.cast(heatmap, tf.float32)
     heatmap     = tf.maximum(heatmap, 0) / (tf.math.reduce_max(heatmap) + 1e-8)
     return heatmap.numpy()
 

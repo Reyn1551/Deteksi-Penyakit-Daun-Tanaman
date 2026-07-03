@@ -88,7 +88,8 @@ def get_gradcam_heatmap(
     heatmap = last_conv_output @ pooled_grads[..., tf.newaxis]
     heatmap = tf.squeeze(heatmap)
 
-    # Normalisasi ke rentang [0, 1]
+    # Normalisasi ke rentang [0, 1] (Cast ke float32 agar didukung OpenCV resize)
+    heatmap = tf.cast(heatmap, tf.float32)
     heatmap = tf.maximum(heatmap, 0) / (tf.math.reduce_max(heatmap) + 1e-8)
     return heatmap.numpy()
 
@@ -273,7 +274,7 @@ def batch_gradcam(
 if __name__ == "__main__":
     # Ganti dengan path gambar daun yang ingin dianalisis
     TEST_IMAGES = [
-        "data/plantvillage dataset/color/Tomato___Bacterial_spot/00416c7d-0b85-46a5-befd-b1adc7a48234___GCREC_Bact.Sp 3083.JPG",
+        "data/plantvillage dataset/color/Tomato___Bacterial_spot/00416648-be6e-4bd4-bc8d-82f43f8a7240___GCREC_Bact.Sp 3110.JPG",
         # Tambah path gambar lain di sini...
     ]
 
