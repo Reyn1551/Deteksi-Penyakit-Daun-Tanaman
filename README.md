@@ -27,6 +27,14 @@ plant_disease_project/
 
 ---
 
+## Dokumentasi Lengkap
+
+Dokumentasi arsitektur, evaluasi, dan deployment tersedia di folder [docs](docs/):
+
+- [docs/README.md](docs/README.md)
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+- [docs/DEPLOYMENT_AND_EVALUATION.md](docs/DEPLOYMENT_AND_EVALUATION.md)
+
 ## Quick Start
 
 ### 1. Clone / Setup environment

@@ -43,6 +43,12 @@ for layer in reversed(model.layers):
         break
 print(f"Model dimuat. Layer Grad-CAM: {LAST_CONV_LAYER}")
 
+# Buat grad_model secara global sekali saja untuk menghindari masalah tracing di thread Flask
+grad_model = keras.Model(
+    inputs  = model.inputs,
+    outputs = [model.get_layer(LAST_CONV_LAYER).output, model.output],
+)
+
 # ─────────────────────────────────────────────
 # Helper functions
 # ─────────────────────────────────────────────
@@ -57,12 +63,10 @@ def preprocess_image(file_bytes: bytes) -> np.ndarray:
 
 
 def get_gradcam_heatmap(img_array: np.ndarray, pred_index: int) -> np.ndarray:
-    grad_model = keras.Model(
-        inputs  = model.inputs,
-        outputs = [model.get_layer(LAST_CONV_LAYER).output, model.output],
-    )
+    # Menggunakan tf.convert_to_tensor agar tracing lebih konsisten
+    img_tensor = tf.convert_to_tensor(img_array)
     with tf.GradientTape() as tape:
-        conv_output, predictions = grad_model(img_array)
+        conv_output, predictions = grad_model(img_tensor)
         class_channel = predictions[:, pred_index]
     grads       = tape.gradient(class_channel, conv_output)
     pooled_grads= tf.reduce_mean(grads, axis=(0, 1, 2))
@@ -120,7 +124,6 @@ HTML_TEMPLATE = """
   header { background: #15803d; color: white; padding: 1.25rem 2rem;
            display: flex; align-items: center; gap: 1rem; }
   header h1 { font-size: 1.4rem; font-weight: 600; }
-  header span { font-size: 1.8rem; }
   
   .container { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
   
@@ -129,7 +132,7 @@ HTML_TEMPLATE = """
                  transition: border-color 0.2s; }
   .upload-area:hover, .upload-area.dragover { border-color: #16a34a; background: #f0fdf4; }
   .upload-area input { display: none; }
-  .upload-area .icon { font-size: 3rem; margin-bottom: 1rem; }
+  .upload-area .icon-placeholder { font-size: 1.2rem; font-weight: bold; color: #16a34a; margin-bottom: 1rem; }
   .upload-area p { color: #6b7280; font-size: 0.95rem; margin-top: 0.5rem; }
   
   .btn { background: #16a34a; color: white; border: none; padding: 0.75rem 2rem;
@@ -178,21 +181,20 @@ HTML_TEMPLATE = """
 </head>
 <body>
 <header>
-  <span>🌿</span>
   <div>
     <h1>Deteksi Penyakit Daun Tanaman</h1>
-    <p style="font-size:0.8rem; opacity:0.85">EfficientNet-B0 + Grad-CAM · PlantVillage Dataset</p>
+    <p style="font-size:0.8rem; opacity:0.85">EfficientNet-B0 + Grad-CAM | PlantVillage Dataset</p>
   </div>
 </header>
 
 <div class="container">
   <div class="upload-area" id="dropZone">
     <input type="file" id="fileInput" accept="image/*">
-    <div class="icon">📷</div>
+    <div class="icon-placeholder">Upload Gambar</div>
     <strong>Klik atau seret gambar daun di sini</strong>
-    <p>Format: JPG, PNG, WEBP · Maks. 10MB</p>
+    <p>Format: JPG, PNG, WEBP | Maks. 10MB</p>
     <div class="preview" id="preview"></div>
-    <button class="btn" id="analyzeBtn" onclick="analyzeImage()" disabled>🔍 Analisis Penyakit</button>
+    <button class="btn" id="analyzeBtn" onclick="analyzeImage()" disabled>Analisis Penyakit</button>
   </div>
   
   <div class="loader" id="loader">
@@ -214,7 +216,7 @@ HTML_TEMPLATE = """
     <p class="section-title">Top-5 Prediksi</p>
     <ul class="topk-list" id="topkList"></ul>
     
-    <p class="section-title">Grad-CAM — Area Fokus Model</p>
+    <p class="section-title">Grad-CAM - Area Fokus Model</p>
     <div class="gradcam-grid">
       <div>
         <img id="origImg" src="" alt="Gambar asli">
@@ -222,7 +224,7 @@ HTML_TEMPLATE = """
       </div>
       <div>
         <img id="camImg" src="" alt="Grad-CAM overlay">
-        <p>Grad-CAM overlay (merah = area paling berpengaruh)</p>
+        <p>Grad-CAM overlay (warna merah menunjukkan fokus area utama)</p>
       </div>
     </div>
   </div>
@@ -290,7 +292,7 @@ async function analyzeImage() {
 
 function displayResult(data) {
   const badge = document.getElementById("statusBadge");
-  badge.textContent = data.is_healthy ? "✅ Sehat" : "⚠️ Terdeteksi Penyakit";
+  badge.textContent = data.is_healthy ? "Sehat" : "Terdeteksi Penyakit";
   badge.className   = "status-badge " + (data.is_healthy ? "healthy" : "diseased");
 
   document.getElementById("plantName").textContent   = "Tanaman: " + data.plant;
@@ -303,7 +305,7 @@ function displayResult(data) {
   const topkList = document.getElementById("topkList");
   topkList.innerHTML = data.top_k.map(([cls, conf]) => {
     const parts = cls.split("___");
-    const label = (parts[0] + " — " + (parts[1] || "")).replace(/_/g, " ");
+    const label = (parts[0] + " - " + (parts[1] || "")).replace(/_/g, " ");
     return `<li><span>${label}</span><span class="topk-score">${(conf*100).toFixed(1)}%</span></li>`;
   }).join("");
 
@@ -317,6 +319,7 @@ function displayResult(data) {
 </body>
 </html>
 """
+
 
 # ─────────────────────────────────────────────
 # Routes
@@ -376,5 +379,5 @@ def health():
 # ─────────────────────────────────────────────
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 5000))
-    print(f"\n🌿 Aplikasi berjalan di http://localhost:{port}")
+    print(f"\nAplikasi berjalan di http://localhost:{port}")
     app.run(host="0.0.0.0", port=port, debug=False)
