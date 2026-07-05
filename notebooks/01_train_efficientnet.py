@@ -2,18 +2,7 @@
 # PROJECT: Deteksi Penyakit Daun Tanaman — OPTIMIZED VERSION
 # Model   : EfficientNet-B0 (Transfer Learning)
 # Dataset : PlantVillage (via Kaggle)
-# Target  : >= 97% Accuracy, ~2-3x faster training
-# ============================================================
-#
-# OPTIMASI untuk GPU NVIDIA (RTX series):
-#   1. Mixed Precision (FP16) — 2x throughput di RTX Tensor Cores
-#   2. tf.data pipeline — hapus CPU bottleneck dari ImageDataGenerator
-#   3. XLA compilation — fused ops, less kernel launch overhead
-#   4. Larger batch size — GPU utilization naik drastis
-#   5. Prefetch + parallel I/O — data loading overlap dengan compute
-#
-# Speedup yang diharapkan: 7 menit/epoch → ~2-3 menit/epoch
-# ============================================================
+# Target  : >= 97% Accuracy
 
 import os
 import random
@@ -51,8 +40,6 @@ if gpus:
     print("✓ Memory growth enabled")
 
     # ─── OPTIMASI 1: Mixed Precision (FP16) ───
-    # RTX series punya Tensor Cores yang 2x lebih cepat untuk FP16
-    # Training tetap stabil karena loss computation pakai FP32
     policy = tf.keras.mixed_precision.Policy("mixed_float16")
     tf.keras.mixed_precision.set_global_policy(policy)
     print(f"✓ Mixed precision enabled: {policy.name}")
