@@ -1,0 +1,79 @@
+--- Jumlah data per kelas (Sebelum Split) ---
+  Apple___Apple_scab: 630 gambar
+  Apple___Black_rot: 621 gambar
+  Apple___Cedar_apple_rust: 275 gambar
+  Apple___healthy: 1645 gambar
+  Blueberry___healthy: 1502 gambar
+  Cherry_(including_sour)___Powdery_mildew: 1052 gambar
+  Cherry_(including_sour)___healthy: 854 gambar
+  Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot: 513 gambar
+  Corn_(maize)___Common_rust_: 1192 gambar
+  Corn_(maize)___Northern_Leaf_Blight: 985 gambar
+  Corn_(maize)___healthy: 1162 gambar
+  Grape___Black_rot: 1180 gambar
+  Grape___Esca_(Black_Measles): 1383 gambar
+  Grape___Leaf_blight_(Isariopsis_Leaf_Spot): 1076 gambar
+  Grape___healthy: 423 gambar
+  Orange___Haunglongbing_(Citrus_greening): 5507 gambar
+  Peach___Bacterial_spot: 2297 gambar
+  Peach___healthy: 360 gambar
+  Pepper,_bell___Bacterial_spot: 997 gambar
+  Pepper,_bell___healthy: 1478 gambar
+  Potato___Early_blight: 1000 gambar
+  Potato___Late_blight: 1000 gambar
+  Potato___healthy: 152 gambar
+  Raspberry___healthy: 371 gambar
+  Soybean___healthy: 5090 gambar
+  Squash___Powdery_mildew: 1835 gambar
+  Strawberry___Leaf_scorch: 1109 gambar
+  Strawberry___healthy: 456 gambar
+  Tomato___Bacterial_spot: 2127 gambar
+  Tomato___Early_blight: 1000 gambar
+  Tomato___Late_blight: 1909 gambar
+  Tomato___Leaf_Mold: 952 gambar
+  Tomato___Septoria_leaf_spot: 1771 gambar
+  Tomato___Spider_mites Two-spotted_spider_mite: 1676 gambar
+  Tomato___Target_Spot: 1404 gambar
+  Tomato___Tomato_Yellow_Leaf_Curl_Virus: 5357 gambar
+  Tomato___Tomato_mosaic_virus: 373 gambar
+  Tomato___healthy: 1591 gambar
+
+--- Jumlah data per kelas setelah split ---
+  Apple___Apple_scab: Train = 504, Val = 126
+  Apple___Black_rot: Train = 489, Val = 132
+  Apple___Cedar_apple_rust: Train = 220, Val = 55
+  Apple___healthy: Train = 1316, Val = 329
+  Blueberry___healthy: Train = 1207, Val = 295
+  Cherry_(including_sour)___Powdery_mildew: Train = 820, Val = 232
+  Cherry_(including_sour)___healthy: Train = 687, Val = 167
+  Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot: Train = 405, Val = 108
+  Corn_(maize)___Common_rust_: Train = 973, Val = 219
+  Corn_(maize)___Northern_Leaf_Blight: Train = 790, Val = 195
+  Corn_(maize)___healthy: Train = 935, Val = 227
+  Grape___Black_rot: Train = 906, Val = 274
+  Grape___Esca_(Black_Measles): Train = 1115, Val = 268
+  Grape___Leaf_blight_(Isariopsis_Leaf_Spot): Train = 854, Val = 222
+  Grape___healthy: Train = 338, Val = 85
+  Orange___Haunglongbing_(Citrus_greening): Train = 4401, Val = 1106
+  Peach___Bacterial_spot: Train = 1831, Val = 466
+  Peach___healthy: Train = 279, Val = 81
+  Pepper,_bell___Bacterial_spot: Train = 780, Val = 217
+  Pepper,_bell___healthy: Train = 1184, Val = 294
+  Potato___Early_blight: Train = 797, Val = 203
+  Potato___Late_blight: Train = 798, Val = 202
+  Potato___healthy: Train = 127, Val = 25
+  Raspberry___healthy: Train = 295, Val = 76
+  Soybean___healthy: Train = 4091, Val = 999
+  Squash___Powdery_mildew: Train = 1476, Val = 359
+  Strawberry___Leaf_scorch: Train = 880, Val = 229
+  Strawberry___healthy: Train = 361, Val = 95
+  Tomato___Bacterial_spot: Train = 1689, Val = 438
+  Tomato___Early_blight: Train = 814, Val = 186
+  Tomato___Late_blight: Train = 1533, Val = 376
+  Tomato___Leaf_Mold: Train = 763, Val = 189
+  Tomato___Septoria_leaf_spot: Train = 1436, Val = 335
+  Tomato___Spider_mites Two-spotted_spider_mite: Train = 1342, Val = 334
+  Tomato___Target_Spot: Train = 1125, Val = 279
+  Tomato___Tomato_Yellow_Leaf_Curl_Virus: Train = 4313, Val = 1044
+  Tomato___Tomato_mosaic_virus: Train = 296, Val = 77
+  Tomato___healthy: Train = 1274, Val = 317
