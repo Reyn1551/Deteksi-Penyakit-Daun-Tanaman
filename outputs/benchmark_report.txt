@@ -20,21 +20,6 @@ GPU: ✓ NVIDIA GPU
 
   Test Set Size: 5000 samples
 
-INTERPRETATION:
-  ✓ Excellent accuracy (>98%)
-  
-  Akurasi sangat tinggi ini VALID jika:
-    ✓ Model ditest pada data terpisah (test set)
-    ✓ Confidence interval konsisten dengan actual performance
-    ✓ Model robust terhadap perturbations
-    ✓ Per-class performance balanced
-  
-  Mungkin ada overfitting jika:
-    ✗ Confidence pada wrong predictions masih tinggi
-    ✗ Performance drop besar pada robustness test
-    ✗ Class imbalance tinggi
-
-
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 2. CLASS-WISE PERFORMANCE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

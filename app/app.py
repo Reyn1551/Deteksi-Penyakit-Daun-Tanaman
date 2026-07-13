@@ -43,10 +43,16 @@ for layer in reversed(model.layers):
         break
 print(f"Model dimuat. Layer Grad-CAM: {LAST_CONV_LAYER}")
 
+# Hapus softmax dari layer terakhir khusus untuk Grad-CAM agar tidak terjadi vanishing gradient
+# saat model sangat yakin (confidence mendekati 1.0)
+grad_model_linear = keras.models.clone_model(model)
+grad_model_linear.set_weights(model.get_weights())
+grad_model_linear.layers[-1].activation = tf.keras.activations.linear
+
 # Buat grad_model secara global sekali saja untuk menghindari masalah tracing di thread Flask
 grad_model = keras.Model(
-    inputs  = model.inputs,
-    outputs = [model.get_layer(LAST_CONV_LAYER).output, model.output],
+    inputs  = grad_model_linear.inputs,
+    outputs = [grad_model_linear.get_layer(LAST_CONV_LAYER).output, grad_model_linear.output],
 )
 
 # ─────────────────────────────────────────────
@@ -66,6 +72,7 @@ def get_gradcam_heatmap(img_array: np.ndarray, pred_index: int) -> np.ndarray:
     # Menggunakan tf.convert_to_tensor agar tracing lebih konsisten
     img_tensor = tf.convert_to_tensor(img_array)
     with tf.GradientTape() as tape:
+        tape.watch(img_tensor) # Pastikan tensor diamati oleh GradientTape
         conv_output, predictions = grad_model(img_tensor)
         class_channel = predictions[:, pred_index]
     grads       = tape.gradient(class_channel, conv_output)
